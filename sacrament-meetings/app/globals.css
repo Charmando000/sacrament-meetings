@@ -22,3 +22,38 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+@media print {
+  /* Hide navigation, buttons, and unnecessary elements */
+  nav,
+  footer,
+  header > div,
+  button {
+    display: none !important;
+  }
+
+  /* Use the full page for the meeting program */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  article {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Avoid splitting sections across pages */
+  article section {
+    break-inside: avoid;
+  }
+
+  /* Improve printed text */
+  article h1,
+  article h2,
+  article p,
+  article li {
+    color: black !important;
+  }
+}

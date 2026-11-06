@@ -1,4 +1,5 @@
 import type { SacramentMeeting } from "@/lib/types";
+import PrintButton from "@/components/PrintButton";
 
 type MeetingDetailProps = {
   meeting: SacramentMeeting;
@@ -9,7 +10,10 @@ export default function MeetingDetail({
 }: MeetingDetailProps) {
   return (
     <article className="space-y-8 rounded-lg border bg-white p-6 shadow-sm">
-      <header>
+      <header className="flex flex-col gap-4">
+        <div className="flex justify-end print:hidden">
+          <PrintButton />
+        </div>
         <p className="text-sm text-gray-500">{meeting.date}</p>
 
         <h1 className="text-2xl font-bold text-gray-900">
