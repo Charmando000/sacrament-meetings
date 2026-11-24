@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import MeetingCard from "@/components/MeetingCard";
 import MeetingSearch from "@/components/MeetingSearch";
 import Pagination from "@/components/Pagination";
 import { getMeetings, getMeetingsTotalPages } from "@/lib/meetings-db";
+
+export const metadata: Metadata = {
+  title: "Meetings",
+  description: "Browse planned sacrament meeting programs for San Lorenzo Ward.",
+};
 
 type MeetingsPageProps = {
   searchParams: Promise<{
@@ -32,9 +38,7 @@ export default async function MeetingsPage({ searchParams }: MeetingsPageProps) 
           Create meeting
         </Link>
       </header>
-
       <MeetingSearch />
-
       {meetings.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2">
           {meetings.map((meeting) => <MeetingCard key={meeting.id} meeting={meeting} />)}
@@ -42,7 +46,6 @@ export default async function MeetingsPage({ searchParams }: MeetingsPageProps) 
       ) : (
         <p className="mt-8 rounded-lg border bg-white p-6 text-gray-600">No meetings found. Create a meeting to get started.</p>
       )}
-
       <Pagination totalPages={totalPages} currentPage={currentPage} query={query} />
     </section>
   );

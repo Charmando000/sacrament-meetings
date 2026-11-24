@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -9,6 +10,11 @@ import {
   updateMeeting as updateMeetingRecord,
 } from "@/lib/meetings-db";
 import type { MeetingType, SacramentMeeting, SpeakerItem } from "@/lib/types";
+
+async function requireAdmin() {
+  const session = await auth();
+  if (!session?.user) redirect("/login");
+}
 
 export type MeetingFormState = {
   message: string | null;
@@ -117,6 +123,7 @@ export async function createMeeting(
   _prevState: MeetingFormState,
   formData: FormData,
 ): Promise<MeetingFormState> {
+  await requireAdmin();
   const parsed = MeetingFormSchema.safeParse(getFormValues(formData));
   if (!parsed.success) {
     return {
@@ -142,6 +149,7 @@ export async function updateMeeting(
   _prevState: MeetingFormState,
   formData: FormData,
 ): Promise<MeetingFormState> {
+  await requireAdmin();
   const parsed = MeetingFormSchema.safeParse(getFormValues(formData));
   if (!parsed.success) {
     return {
@@ -164,6 +172,7 @@ export async function updateMeeting(
 }
 
 export async function deleteMeeting(formData: FormData): Promise<void> {
+  await requireAdmin();
   const id = Number(formData.get("id"));
   if (!Number.isInteger(id) || id <= 0) throw new Error("Invalid meeting ID.");
 
